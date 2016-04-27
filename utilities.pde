@@ -42,6 +42,14 @@ boolean isSelfIntersecting(PVector [] ptList, int tempNumPts) {
       break;
     }
   } 
+  if (!selfIntersecting) {
+    for (int j = 0; j<tempNumPts-1; j++) {
+      selfIntersecting = segIntersection(ptList[tempNumPts-1], ptList[0], ptList[j], ptList[j+1]);
+      if (selfIntersecting) {
+        break;
+      }
+    }
+  }
   return selfIntersecting;
 }
 
