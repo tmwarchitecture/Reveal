@@ -81,35 +81,39 @@ boolean segIntersection(PVector pt1, PVector pt2, PVector pt3, PVector pt4)
   return toggle;
 }
 
-PVector[] boundingBox2d(PVector[] tempArray, float x0, float x1, float y0, float y1, int tempNumPts) {
-  //remap array of PVectors to a given domain
-  float minX=999;
-  float minY=999;
-  float minZ=999;
-  float maxX=0;
-  float maxY=0;
-  float maxZ=0;
-  //float []tempX = new float[numPartsMax];
+PVector[] mapVectorArray(PVector[]tempPVectorArray, float x0, float x1, float y0, float y1, int tempNumPts) {
+  float [] tempXArray = new float [numPtsMax];
+  float [] tempYArray = new float [numPtsMax];
   for (int i = 0; i<tempNumPts; i++) {
-    //tempX[i]=0;
-    if (tempArray[i].x<minX) {
-      minX = tempArray[i].x;
+    tempXArray[i] = tempPVectorArray[i].x;
+    tempYArray[i] = tempPVectorArray[i].y;
+  }
+
+  tempXArray = boundingBox1d(tempXArray, x0, x1, tempNumPts);
+  tempYArray = boundingBox1d(tempYArray, y0, y1, tempNumPts);
+
+  for (int i = 0; i<tempNumPts; i++) {
+    tempPVectorArray[i].x = tempXArray[i];
+    tempPVectorArray[i].y = tempYArray[i];
+  }
+  return tempPVectorArray;
+}
+
+float[] boundingBox1d(float[] tempArray, float x0, float x1, int tempNumPts) {
+  //remap array of floats to a given domain
+  float minX=999;
+  float maxX=0;
+  for (int i = 0; i<tempNumPts; i++) {
+    if (tempArray[i]<minX) {
+      minX = tempArray[i];
     }
-    if (tempArray[i].y<minY) {
-      minY = tempArray[i].y;
+    if (tempArray[i]>maxX) {
+      maxX = tempArray[i];
     }
-    if (tempArray[i].z<minZ) {
-      minZ = tempArray[i].z;
-    }
-    if (tempArray[i].x>maxX) {
-      maxX = tempArray[i].x;
-    }
-    if (tempArray[i].y>maxY) {
-      maxY = tempArray[i].y;
-    }
-    if (tempArray[i].z>maxZ) {
-      maxZ = tempArray[i].z;
-    }
+  }
+  for (int i = 0; i<tempNumPts; i++) {
+    //print(" minX:"+minX+"maxX: " +maxX);
+    tempArray[i] = map(tempArray[i], minX, maxX, x0, x1);
   }
   for (int i = 0; i<tempNumPts; i++) {
     //tempArray[i].x = map(tempArray[i].x, minX, maxX, x0, x1);
