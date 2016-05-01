@@ -65,7 +65,7 @@ class Sketch {
     }
 
 
-    pts=boundingBox2d(pts, x0, x1, y0, y1, numPts);
+    pts=mapVectorArray(pts, x0, x1, y0, y1, numPts); //remap PVector to a domain
 
     //add pts to the skCplane array to get the final position
     for (int i = 0; i<numPts; i++) {
